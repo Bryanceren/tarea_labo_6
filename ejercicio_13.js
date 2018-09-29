@@ -1,95 +1,62 @@
-var flag = true;
-var todolist=[];
-var vendidos=[];
-var stockcero=[];
-
-function agregar(codigo,descripcion,tipo,preciocompra,precioventa,stock){
-    var producto={
-        codigo:codigo,
-        descripcion:descripcion,
-        tipo:tipo,
-        preciocompra:preciocompra,
-        precioventa:precioventa,
-        stock:stock
-    }
-    todolist.push(producto);
-    return 0;
-}
-function modificar(codigo,stock){
-    for(var i in todolist){
-        if(todolist[i].codigo=codigo){
-            todolist[i].stock=stock;
-            break;
-        }    
-    }
-    return 0;
-}
-function vender(codigo){
-    for(var i in todolist){
-        if(todolist[i].codigo=codigo){
-            todolist[i].stock-=1;
-            vendidos.push(todolist[i]);
-            break;
-        }    
-    }
-    return 0;
-}
-function promedio(){
-    let suma=0;
-    for(let vendido of vendidos){
-        suma+=vendido.precioventa;   
-    }
-    console.log("promedio de ventas: "+suma/vendidos.length);
-    return 0;
-}
-function stockx(){
-    for(let producto of todolist){
-        if(producto.stock==0){
-            stockcero.push(producto);
+var convertor={
+    convertir:function convertir(medida,unidad,unidadnew,tipo){
+        let resultado;
+        switch(tipo){
+            case 'L':
+                if(unidad=='m'){
+                    if(unidadnew=='km'){
+                        resultado=medida/1000;
+                        return resultado+""+unidadnew;
+                    }else if(unidadnew=='ft'){
+                        resultado=medida*3.28;
+                        return resultado+""+unidadnew;
+                    }
+                    else {
+                        resultado=medida*100;
+                        return resultado+""+unidadnew;
+                    }
+                }
+                else if(unidad=='km'){
+                    resultado=medida*1000;
+                    return resultado+""+unidadnew;
+                }
+                else if(unidad=='ft'){
+                    resultado=medida*0.3048;
+                    return resultado+""+unidadnew;
+                }
+                break;
+            case 'T':
+                if(unidad=='c'){
+                    if(unidadnew=='f'){
+                        resultado = (medida*(9/5)) + 32;
+                        return resultado+""+unidadnew;
+                    }
+                    else if(unidadnew='k'){
+                        resultado = medida + 273.15;
+                        return resultado+""+unidadnew;
+                    }
+                }else if(unidad=='f'){
+                    if(unidadnew=='c'){
+                        resultado = (medida-32)*(5/9);
+                        return resultado+""+unidadnew;
+                    }
+                    else if(unidadnew='k'){
+                        resultado = (medida + 459.67)*(5/9);
+                        return resultado+""+unidadnew;
+                    }
+                }
+                else if(unidad=='k'){
+                    if(unidadnew=='c'){
+                        resultado =medida - 273.15;
+                        return resultado+""+unidadnew;
+                    }
+                    else if(unidadnew='f'){
+                        resultado = medida*(9/5) - 459.67;
+                        return resultado+""+unidadnew;
+                    }
+                }
+                break;
         }
     }
-    console.log(stockcero);
-    return 0;
 }
-
-while(flag)
-{
-  var opcion = prompt("1.Agregar producto.\n2.Modificar Stock\n3.Registrar venta y reducir stock.\n4.Mostrar promedio de ventas\n5.Mostrar productos con stock.\n6.Salir.");
-
-  switch(opcion)
-  {
-      case "1":
-        var codigo=prompt("codigo");
-        var descripcion=prompt("descripcion");
-        var tipo=prompt("tipo");
-        var preciocompra=prompt("preciocompra");
-        var precioventa=prompt("precioventa");
-        var stock=prompt("stock");
-        agregar(codigo,descripcion,tipo,preciocompra,precioventa,stock);
-        break;
-      case "2":
-        var codigo=prompt("codigo");
-        var stock=prompt("stock nuevo");
-        modificar(codigo,stock);
-        break;
-      case "3":
-        var codigo=prompt("codigo de venta");
-        vender(codigo);
-        break;
-      case "4":
-        promedio();
-        break;
-      case "5":
-        stockx();
-        break;
-      case "6":
-        flag = false;
-        break;
-        case null:
-        flag = false;
-        break;
-      default:
-        alert("Elija una opcion valida");
-        break;
-  }
-}
+console.log(convertor.convertir(100, 'f', 'c', 'T'));
